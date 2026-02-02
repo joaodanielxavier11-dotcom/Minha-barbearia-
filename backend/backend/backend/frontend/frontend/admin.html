@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+</head>
+<body>
+
+<h2>Área Administrativa</h2>
+<input type="password" id="senha" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+
+<div id="painel" style="display:none">
+  <h3>Horários</h3>
+  <textarea id="horarios" rows="5"></textarea>
+  <button onclick="salvar()">Salvar</button>
+</div>
+
+<script>
+let logado = false;
+
+function login() {
+  fetch("http://localhost:3000/admin/login", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ senha: senha.value })
+  }).then(r=>{
+    if(r.ok){
+      painel.style.display="block";
+    } else {
+      alert("Senha errada");
+    }
+  });
+}
+
+function salvar() {
+  const lista = horarios.value.split(",");
+  fetch("http://localhost:3000/admin/horarios", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ horarios: lista })
+  });
+}
+</script>
+</body>
+</html>
